@@ -25,3 +25,4 @@ beat-link-trigger.iml
 *.pcap
 *.pcapng
 streaming-observations*.jsonl
+__pycache__/
