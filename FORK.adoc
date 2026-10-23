@@ -1,0 +1,32 @@
+= CDJ-3000X streaming BLT companion
+
+This branch starts at Kevinnns/beat-link-trigger CDJ-3000x commit
+7d86ca6a93e77d2d2688c544291b97b0b13c6015. Upstream history and licenses are retained.
+It pins the experimental imlach/beat-link dependency; BLT application logic is unchanged.
+
+== Build and run
+
+Use JDK 17. First build and install the codex/cdj3000x-streaming branch of
+imlach/beat-link using Maven. Then, from this repository:
+
+ npm ci --ignore-scripts
+ lein uberjar
+ javac -cp target/beat-link-trigger.jar -d target/streaming-tools tools/streaming/*.java
+ java -Dbeatlink.experimentalStreaming=true -Djava.util.prefs.PreferencesFactory=TestPreferences -Dcdj3000x.log=streaming-observations.jsonl -cp target/streaming-tools:target/beat-link-trigger.jar TestLauncher --offline --suppress
+
+The helper uses in-memory preferences. Choose Network > Use Real Player Number,
+then Online, and open Player Status. Close other software holding the DJ Link
+ports first. No A9 monitor starts; no MIDI or lighting output is configured by
+these helpers. Normal BLT operation without the helper remains available.
+
+== Validation
+
+ python3 tools/streaming/check-streaming-health.py streaming-observations.jsonl --seconds 60 --require-track-change
+
+Change tracks on each deck during the measured interval and compare the displayed
+titles with the decks. Fresh status is required; cached metadata alone is not a
+successful test. The separated build still needs this live acceptance test.
+This experimental fork is not a production release.
+
+CI pins Beat Link commit 9a7efad669a077f005138e5139a51685d91b9001; no release
+or installer publication is performed by the experimental workflow.

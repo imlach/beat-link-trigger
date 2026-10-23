@@ -20,3 +20,8 @@ pom.xml.asc
 .hg/
 .idea
 beat-link-trigger.iml
+
+# Local hardware research evidence
+*.pcap
+*.pcapng
+streaming-observations*.jsonl

@@ -1,0 +1,36 @@
+name: Experimental streaming build
+on:
+  push:
+    branches: ['codex/cdj3000x-streaming']
+  pull_request:
+    branches: ['codex/cdj3000x-streaming']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: imlach/beat-link
+          ref: 9a7efad669a077f005138e5139a51685d91b9001
+          path: streaming-library
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: DeLaGuardo/setup-clojure@13.2
+        with:
+          lein: 2.12.0
+      - run: mvn -B -f streaming-library/pom.xml -Dmaven.javadoc.skip=true -Dgpg.skip=true install
+      - run: npm ci --ignore-scripts
+      - run: lein uberjar
+      - run: javac -cp target/beat-link-trigger.jar -d target/streaming-tools tools/streaming/*.java
+      - run: python3 -m py_compile tools/streaming/check-streaming-health.py
