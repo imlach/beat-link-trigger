@@ -28,7 +28,7 @@ titles with the decks. Fresh status is required; cached metadata alone is not a
 successful test. The separated build still needs this live acceptance test.
 This experimental fork is not a production release.
 
-CI pins Beat Link commit 19f08b7eeec1a5f2fa83cc11c39ca2a1f129bd36; no release
+CI pins Beat Link commit b94c6182c8aa641f488b45204b47d73229f3d842; no release
 or installer publication is performed by the experimental workflow.
 
 The pinned library retries missing streaming assets with capped backoff and logs
@@ -37,3 +37,6 @@ validation of delayed waveform recovery is still required.
 
 Use Real Player Number automatically selects an available number. It does not
 prompt for a specific number; this build does not add a number picker.
+
+Streaming retries stop after a 60-second budget per asset and remain stopped
+until the track unloads. Repeated finder requests do not reset this budget.

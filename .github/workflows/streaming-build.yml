@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: imlach/beat-link
-          ref: 19f08b7eeec1a5f2fa83cc11c39ca2a1f129bd36
+          ref: b94c6182c8aa641f488b45204b47d73229f3d842
           path: streaming-library
       - uses: actions/setup-java@v4
         with:
